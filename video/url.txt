@@ -1,0 +1,45 @@
+
+### 方案一需要合成 ###
+# 30032 视频
+# 30280 音频
+# 30216 音频
+
+# 参数
+https://api.bilibili.com/x/web-interface/view?aid=53545832&cid=93672747 参数全面:需要cid
+https://api.bilibili.com/x/web-interface/archive/stat?aid=55036734 参数较少:播放量,硬币,弹幕,评论数量
+https://api.bilibili.com/x/player.so?id=cid:93672747&aid=53545832 参数较多:播放者相关,ip,country等
+
+
+# 解析页面获取视频参数
+# # title
+# html_element = etree.HTML(response.content.decode())
+# title = html_element.xpath("/html/body/div[@id='app']/div[@class='v-wrap']//h1/@title")[0]
+# item["title"] = title
+#
+# # summary
+# summary = html_element.xpath("/html/body/div[@id='app']/div[@class='v-wrap']/div[@class='l-con']/div[@id='v_desc']/div[@class='info open']/text()")[0]
+# item["summary"] = summary
+#
+# # author
+# author = dict()
+# author_name = html_element.xpath("/html/body/div[@id='app']/div[@class='v-wrap']/div[@class='r-con']/div[@id='v_upinfo']//a[@report-id='name']/text()")[0]
+# # 通常是微博,微信公众号等联系方式
+# author_others = html_element.xpath("/html/body/div[@id='app']/div[@class='v-wrap']/div[@class='r-con']/div[@id='v_upinfo']//div[@class='desc']/text()")[0]
+# author["name"] = author_name
+# author["others"] = author_others
+# item["author"] = author
+#
+# # 播放量与弹幕数量
+# view = html_element.xpath("//div[@id='viewbox_report']/div[@class='video-data'][2]/span[@class='view']/@title")[0]
+# print(view)
+# item["view"] = view
+# bullet_screen = html_element.xpath("//div[@id='viewbox_report']/div[@class='video-data'][2]/span[@class='dm']/@title")[0]
+# item["bullet_screen"] = bullet_screen
+
+
+### 未完成 ###
+# 参数
+# 进度条
+# 清晰度选择
+
+
