@@ -29,7 +29,6 @@ class BLDSplider:
                         file.write(c["content"]["message"])
                         file.write("\n")
 
-    # 获得页数
     def get_pages(self):
         response = requests.get(self.url.format(1, self.aid), headers=self.headers)
         if response.status_code == 200:
