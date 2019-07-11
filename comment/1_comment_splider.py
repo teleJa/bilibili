@@ -2,6 +2,7 @@ import requests
 import json
 import math
 import os
+
 class BLDSplider:
     def __init__(self, aid):
         self.aid = aid
