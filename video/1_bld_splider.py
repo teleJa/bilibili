@@ -3,11 +3,13 @@ import re
 import os
 import json
 import sys
+import math
 from lxml import etree
 
 
 class BLDSplider:
     regex_cid = re.compile("\"cid\":(.{8})")
+
 
     def __init__(self, aid):
         self.aid = aid
@@ -19,16 +21,18 @@ class BLDSplider:
 
         self.url = "https://api.bilibili.com/x/player/playurl?avid={}&cid={}&qn=0&type=&otype=json"
 
+    def check_dir(self,author_name):
         # 检查目录
-        self.parent_path = "e:/bilibili/" + str(self.aid) + "/"
+        self.parent_path = "e:/bilibili/" + author_name + "/" + str(self.aid) + "/"
         if not os.path.exists(self.parent_path):
             os.makedirs(self.parent_path)
 
         self.video_name = self.parent_path + str(self.aid) + ".mp4"
 
+
     def parse_url(self, item):
         cid = item["cid"]
-        print("cid:%s" % cid)
+        print("aid:%s   cid:%s" % (str(self.aid),cid))
         title = item["title"]
         print("title:%s" % title)
 
@@ -39,10 +43,10 @@ class BLDSplider:
             result = json.loads(response.content.decode())
             durl = result["data"]["durl"][0]
             video_url = durl["url"]
-            print(video_url)
+            print("video_url:%s" % video_url)
             # 视频大小
             size = durl["size"]
-            print("size:%s" % size )
+            print("size:%s,约%2.2fMB" % (size,size/(1024*1024)))
             video_response = requests.get(video_url, headers=self.headers,stream=True)
             if video_response.status_code == 200:
                 with open(self.video_name, "wb") as file:
@@ -63,9 +67,10 @@ class BLDSplider:
                         use_num = int(percent * width)
                         space_num = int(width - use_num)
                         percent = percent * 100
-                        print('\r进度:[%s%s]%d%%' % (use_num * '#', space_num * ' ', percent), file=sys.stdout, flush=True,end="")
+                        print('\r进度:[%s%s]    %d%%' % (use_num * '#', space_num * ' ', percent), file=sys.stdout, flush=True,end="")
                         if size == count:
                             break
+                print("\r\n")
 
 
     # 获取视频相关参数
@@ -126,6 +131,7 @@ class BLDSplider:
                 # 分享
                 share = stat["share"]
                 item["share"] = share
+            self.check_dir(item["author"]["name"])
             # 视频参数
             with open(self.parent_path + "video_info.txt", "w") as file:
                 file.write(json.dumps(item, ensure_ascii=False, indent=2))
@@ -137,7 +143,8 @@ class BLDSplider:
 
 
 def main():
-    splider = BLDSplider(55036734)
+    # 55036734
+    splider = BLDSplider(sys.argv[1])
     splider.run()
 
 

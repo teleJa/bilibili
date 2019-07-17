@@ -135,10 +135,10 @@ class BLDSplider:
     def run(self):
         item = self.get_video_info()
 
-        # self.parse_url(item)
-        # print("文件下载完毕,开始合并")
-        # # 合并
-        # self.combine(item["title"])
+        self.parse_url(item)
+        print("文件下载完毕,开始合并")
+        # 合并
+        self.combine(item["title"])
 
 
 
